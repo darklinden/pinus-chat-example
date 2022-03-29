@@ -1,0 +1,10 @@
+{
+	"name": "pinus-sample-websocket-chat-web-server",
+	"version": "1.6.3",
+	"private": false,
+	"dependencies": {
+		"express": "4.17.1",
+		"method-override": "^3.0.0"
+	},
+	"gitHead": "9ae42a69112d88d6d96fa674a995504886666842"
+}
