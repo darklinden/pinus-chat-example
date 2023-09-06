@@ -54,7 +54,7 @@
     "ci": "yarn run test",
     "cov": "nyc mocha",
     "gen-api-ref": "node ../../../node_modules/typedoc/bin/typedoc --mode file --hideGenerator --excludeExternals --ignoreCompilerErrors --out ../../../run/site/public/api-reference/pinus-loader lib/",
-    "start": "yarn run build && cd dist &&  node app",
+    "start": "yarn run build && cd dist && NODE_ENV=production node app",
     "test": "yarn run build"
   },
   "version": "1.6.3",

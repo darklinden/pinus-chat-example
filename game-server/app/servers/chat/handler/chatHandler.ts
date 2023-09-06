@@ -1,8 +1,12 @@
 import { ChatRemote } from '../remote/chatRemote';
-import {Application, BackendSession} from 'pinus';
+import { Application, BackendSession } from 'pinus';
 import { FrontendSession } from 'pinus';
 
-export default function(app: Application) {
+import { getLogger } from 'pinus-logger';
+import * as path from 'path';
+let logger = getLogger('pinus', path.basename(__filename));
+
+export default function (app: Application) {
     return new ChatHandler(app);
 }
 
@@ -17,7 +21,10 @@ export class ChatHandler {
      * @param {Object} session
      *
      */
-    async send(msg: {content: string , target: string}, session: BackendSession) {
+    async send(msg: { content: string, target: string }, session: BackendSession) {
+
+        logger.debug('chatHandler.send', msg)
+
         let rid = session.get('rid');
         let username = session.uid.split('*')[0];
         let channelService = this.app.get('channelService');

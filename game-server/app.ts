@@ -23,23 +23,22 @@ app.configure('production|development', 'connector', function () {
             connector: pinus.connectors.hybridconnector,
             heartbeat: 3,
             useDict: true,
-            useProtobuf: true
+            useProtobuf: false
         });
 
-    app.set('serverConfig', {
-        reloadHandlers: true,
-    })
+    // app.set('serverConfig', {
+    //     reloadHandlers: true,
+    // })
 });
 
 app.configure('production|development', 'gate', function () {
     app.set('connectorConfig',
         {
             connector: pinus.connectors.hybridconnector,
-            useProtobuf: true
+            useProtobuf: false
         });
 });
 
-// app configure
 app.configure('production|development', function () {
     // route configures
     app.route('chat', routeUtil.chat);
@@ -57,14 +56,14 @@ app.configure('production|development', function () {
     // });
 });
 
-app.configure('development', function () {
-    // enable the system monitor modules
-    app.enable('systemMonitor');
-});
+// app.configure('development', function () {
+//     // enable the system monitor modules
+//     app.enable('systemMonitor');
+// });
 
-if (app.isMaster()) {
-    app.use(createRobotPlugin({ scriptFile: __dirname + '/robot/robot.js' }));
-}
+// if (app.isMaster()) {
+//     app.use(createRobotPlugin({ scriptFile: __dirname + '/robot/robot.js' }));
+// }
 
 // start app
 app.start();

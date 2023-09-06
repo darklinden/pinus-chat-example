@@ -1,5 +1,9 @@
-import {Application} from 'pinus';
-import {FrontendSession} from 'pinus';
+import { Application } from 'pinus';
+import { FrontendSession } from 'pinus';
+
+import { getLogger } from 'pinus-logger';
+import * as path from 'path';
+let logger = getLogger('pinus', path.basename(__filename));
 
 export default function (app: Application) {
     return new EntryHandler(app);
@@ -18,6 +22,9 @@ export class EntryHandler {
      */
     async enter(msg: { rid: string, username: string }, session: FrontendSession) {
         let self = this;
+
+        logger.log('New client entry chat server: %j', msg)
+
         let rid = msg.rid;
         let uid = msg.username + '*' + rid;
         let sessionService = self.app.get('sessionService');
@@ -38,6 +45,8 @@ export class EntryHandler {
             }
         });
         session.on('closed', this.onUserLeave.bind(this));
+
+        logger.debug('[%s] enter room: %s', uid, rid);
 
         // put user into channel
         let users = await self.app.rpc.chat.chatRemote.add.route(session)(uid, self.app.get('serverId'), rid, true);

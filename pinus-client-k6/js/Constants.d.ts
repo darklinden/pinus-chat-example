@@ -1,0 +1,11 @@
+export declare const PKG_HEAD_BYTES = 4;
+export declare const MSG_FLAG_BYTES = 1;
+export declare const MSG_ROUTE_CODE_BYTES = 2;
+export declare const MSG_ID_MAX_BYTES = 5;
+export declare const MSG_ROUTE_LEN_BYTES = 1;
+export declare const MSG_ROUTE_CODE_MAX = 65535;
+export declare const MSG_COMPRESS_ROUTE_MASK = 1;
+export declare const MSG_COMPRESS_GZIP_MASK = 1;
+export declare const MSG_COMPRESS_GZIP_ENCODE_MASK: number;
+export declare const MSG_TYPE_MASK = 7;
+export declare const ERR_CONNECT_TIMEOUT = "timeout";
