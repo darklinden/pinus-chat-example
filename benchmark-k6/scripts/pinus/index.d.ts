@@ -36,7 +36,8 @@ export interface IEventEmiter {
 
 export interface IWsClient {
     sendBuffer(buffer: Uint8Array): void;
-    isConnected(): boolean;
+    get isConnected(): boolean;
+    set isConnected(value: boolean);
 }
 
 export declare class Message {

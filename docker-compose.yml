@@ -1,0 +1,59 @@
+version: "3"
+services:
+  chat-server:
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 2000M
+    container_name: "chat-server"
+    image: node:16-alpine3.16
+    working_dir: /home/node/app
+    env_file:
+      - config.env
+    command: sh /home/node/app/start.sh
+    volumes:
+      - ./game-server:/home/node/app
+    expose:
+      - "3014"
+      - "3050"
+      - "3051"
+      - "3052"
+    ports:
+      - "3014:3014" 
+      - "3050:3050" 
+      - "3051:3051" 
+      - "3052:3052" 
+    networks:
+      app_net:
+        ipv4_address: 22.22.22.21
+    logging:
+      driver: "local"
+      options:
+          max-file: 5
+          max-size: 10m
+  k6-server:
+    container_name: "k6-server"
+    image: ghcr.io/grafana/xk6-dashboard:0.5.4
+    working_dir: /scripts
+    command: run --out dashboard ./game-flow.js
+    volumes:
+      - ./benchmark-k6/scripts:/scripts
+    expose:
+      - "5665"
+    ports:
+      - "5665:5665"
+    networks:
+      app_net:
+        ipv4_address: 22.22.22.22
+    logging:
+      driver: "local"
+      options:
+          max-file: 5
+          max-size: 10m
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 22.22.22.0/8

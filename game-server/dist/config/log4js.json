@@ -92,7 +92,7 @@
         "console",
         "pinus"
       ],
-      "level": "debug"
+      "level": "warn"
     },
     "con-log": {
       "appenders": [

@@ -10,12 +10,16 @@ export function asyncChat(wsUrl, uid, ErrorCount, callback) {
         // pinus.DEBUG_LOG = true;
 
         pinus.client = {
+            _isConnected: true,
             sendBuffer(buffer) {
                 // console.log('send buffer', buffer);
                 socket.sendBinary(buffer.buffer);
             },
-            isConnected() {
-                return true;
+            get isConnected() {
+                return this._isConnected;
+            },
+            set isConnected(value) {
+                this._isConnected = value;
             }
         }
 
@@ -55,7 +59,8 @@ export function asyncChat(wsUrl, uid, ErrorCount, callback) {
                                     "PINUS Chat enter 成功": data.users != null && data.users.length > 0
                                 });
 
-                                callback(pinus, socket, data['users']);
+                                pinus.users = data.users;
+                                callback(pinus, socket);
                             });
                         }
                         break;
@@ -67,7 +72,47 @@ export function asyncChat(wsUrl, uid, ErrorCount, callback) {
                         break;
                     case PinusEvents.EVENT_MESSAGE:
                         {
-                            // console.log('message', data);
+                            switch (data.route) {
+                                case 'onAdd':
+                                    {
+                                        const addStr = Protocol.strdecode(data.body);
+                                        const addData = JSON.parse(addStr);
+                                        pinus.users = pinus.users || [];
+                                        pinus.users.push(addData.user);
+
+                                        check(null, {
+                                            "PINUS Chat onAdd 成功": addData != null && addData.user != null
+                                        });
+                                    }
+                                    break;
+                                case 'onLeave':
+                                    {
+                                        const leaveStr = Protocol.strdecode(data.body);
+                                        const leaveData = JSON.parse(leaveStr);
+                                        pinus.users = pinus.users || [];
+                                        pinus.users = pinus.users.filter((user) => {
+                                            return user != leaveData.user;
+                                        });
+
+                                        check(null, {
+                                            "PINUS Chat onLeave 成功": leaveData != null && leaveData.user != null
+                                        });
+                                    }
+                                    break;
+                                case 'onChat':
+                                    {
+                                        const chatStr = Protocol.strdecode(data.body);
+                                        const chatData = JSON.parse(chatStr);
+
+                                        check(null, {
+                                            "PINUS Chat onChat 成功": chatData != null && chatData.msg != null
+                                        });
+                                    }
+                                    break;
+                                default:
+                                    console.log('message', data);
+                                    break;
+                            }
                         }
                         break;
                     default:

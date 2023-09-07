@@ -67,6 +67,7 @@ export class EntryHandler {
         if (!session || !session.uid) {
             return;
         }
+        logger.log('User leave: %j', session.uid);
         this.app.rpc.chat.chatRemote.kick.route(session, true)(session.uid, this.app.get('serverId'), session.get('rid'));
     }
 }

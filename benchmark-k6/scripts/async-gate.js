@@ -13,12 +13,16 @@ export function asyncGate(wsUrl, uid, ErrorCount, callback) {
         // pinus.DEBUG_LOG = true;
 
         pinus.client = {
+            _isConnected: true,
             sendBuffer(buffer) {
                 // console.log('send buffer', buffer);
                 socket.sendBinary(buffer.buffer);
             },
-            isConnected() {
-                return true;
+            get isConnected() {
+                return this._isConnected;
+            },
+            set isConnected(value) {
+                this._isConnected = value;
             }
         }
 
@@ -57,6 +61,7 @@ export function asyncGate(wsUrl, uid, ErrorCount, callback) {
                                 });
 
                                 callback(`ws://${data.host}:${data.port}`);
+                                pinus.client.isConnected = false;
                                 socket.close();
                             });
                         }

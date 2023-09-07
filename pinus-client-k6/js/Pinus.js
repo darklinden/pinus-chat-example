@@ -160,7 +160,7 @@ var Pinus = /** @class */ (function () {
         var _a;
         if (!this._heartbeatInterval)
             return;
-        if (!((_a = this.client) === null || _a === void 0 ? void 0 : _a.isConnected())) {
+        if (!((_a = this.client) === null || _a === void 0 ? void 0 : _a.isConnected)) {
             this._heartbeatPassed = 0;
             return;
         }

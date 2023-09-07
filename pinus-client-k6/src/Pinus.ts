@@ -184,7 +184,7 @@ export class Pinus {
     public heartbeatCheck(dt: number) {
         if (!this._heartbeatInterval) return;
 
-        if (!this.client?.isConnected()) {
+        if (!this.client?.isConnected) {
             this._heartbeatPassed = 0;
             return;
         }

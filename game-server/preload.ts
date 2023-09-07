@@ -1,4 +1,4 @@
-﻿import {Promise} from 'bluebird';
+﻿import { Promise } from 'bluebird';
 // 支持注解
 import 'reflect-metadata';
 import { pinus } from 'pinus';
@@ -37,4 +37,9 @@ export function preload() {
     process.on('unhandledRejection', (reason: any, p) => {
         console.error(pinus.app.getServerId(), 'Caught Unhandled Rejection at:', p, 'reason:', reason);
     });
+
+    ['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGHUP', 'SIGBREAK'].forEach(signal => process.on(signal as NodeJS.Signals, (sig) => {
+        console.log((pinus.app?.getServerId() || 'unknown') + ':' + process.pid, 'Caught ' + sig + ', exiting');
+        process.exit();
+    }));
 }

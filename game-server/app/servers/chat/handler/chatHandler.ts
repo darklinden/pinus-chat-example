@@ -42,11 +42,14 @@ export class ChatHandler {
         // the target is specific user
         else {
             let tuid = msg.target + '*' + rid;
-            let tsid = channel.getMember(tuid)['sid'];
-            channelService.pushMessageByUids('onChat', param, [{
-                uid: tuid,
-                sid: tsid
-            }]);
+            let member = channel.getMember(tuid);
+            if (member) {
+                let tsid = member['sid'];
+                channelService.pushMessageByUids('onChat', param, [{
+                    uid: tuid,
+                    sid: tsid
+                }]);
+            }
         }
     }
 }
